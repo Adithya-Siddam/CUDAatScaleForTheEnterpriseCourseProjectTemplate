@@ -1,62 +1,79 @@
-# CUDAImageProcessingAtScale
+# Canny Edge Detection with CUDA
 
-This is project for course CUDA at Scale for the Enterprise.
+## Overview
+This project implements a Canny edge detection algorithm using CUDA to leverage the parallel processing capabilities of GPUs. The application reads grayscale images from a specified input directory, processes them using a CUDA kernel, and outputs the results to a specified output directory. This implementation aims to enhance the performance of edge detection tasks, particularly for large image datasets.
 
-## Project Description
+## Code Organization
+- **bin/**: This folder holds all binary/executable code that is built automatically or manually. Executable code should use the `.exe` extension or a programming language-specific extension.
+  
+- **data/**: This folder holds example data in any format. If the original data is large or can be brought in via scripts, this can be left blank in the repository to avoid major downloads when only the code/structure is desired.
 
-This program is intended to create simple biqubic binary MIP-maps for the images.
+- **src/**: The source code is placed here in a hierarchical fashion, as appropriate.
 
-![](gta_map.png)
+- **README.md**: This file holds the description of the project so that anyone cloning or deciding if they want to clone this repository can understand its purpose to help with their decision.
 
-## How to run
+- **Makefile**: This file provides instructions for building the project's code automatically.
 
-> Flag `log=1` for logging in the console. Default is `log=0`.
+- **run.sh**: An optional script used to run your executable code, either with or without command-line arguments.
 
-```shell
-$ make all log=1 ARGS="-f ./myfile.png -o ./mydir/"
-```
+## Key Concepts
+- CUDA Programming
+- Image Processing
+- Edge Detection Algorithms
+- Memory Management in CUDA
 
-> You can compile and build 3 different versions. In addition to the standard compilation, there are **debug** and **test** builds for use. For a **test build** use:
->```shell
->$ make all log=1 t=1
->```
-> For **debug build** use:
->```shell
->$ make all log=1 dbg=1
->```
-> **Test** build will process a lot of images from [database](https://sipi.usc.edu/database/database.php?volume=aerials) and **debug** build will process only one but with png output.
+## Supported OS
+- Linux
+- Windows (with appropriate modifications)
 
-## Arguments
+## Supported CPU Architecture
+- x86_64
 
-| **argument** | **input_example**          | **default_value** | **meaning**                                                                                                 |
-|--------------|----------------------------|-------------------|-------------------------------------------------------------------------------------------------------------|
-|      `-f`      | `-f ./data/my_image.tiff`  |         -         | Allows you to process your own file. Can be used many times.                                                |
-|      `-o`      |  `-o ./my/path/to/output/` |  `./data/output/` | Set output path for the processed images.                                                                   |
-|      `-b`      |           `-b 32`          |        `64`       | Set CUDA block dimension (dim3 block(64/2, 64/2, 1)). The maximum value is 64 due to the CUDA architecture. |
+## CUDA APIs Involved
+- `cudaMalloc()`
+- `cudaMemcpy()`
+- `cudaFree()`
+- `cudaEventCreate()`
+- `cudaEventRecord()`
+- `cudaEventSynchronize()`
+- `cudaEventElapsedTime()`
 
-## Example
+## Dependencies Needed to Build/Run
+- CUDA Toolkit
+- OpenCV (version 4 or later)
 
+## Prerequisites
+- Install the CUDA Toolkit on your machine. Ensure that your GPU is compatible with CUDA.
+- Install OpenCV using the appropriate package manager for your operating system. 
 
-| **Source**    | INPUT | CPU | CUDA |
-|---------------|-------|-----|------|
-| **batchSize** |   64  |  32 | 32   |
-| **imageSize** |    4096   |  1024   |   1024   |
-|  **outImage** |   ![](.debug/INPUT64.png)    |   ![](.debug/CPU32.png)  |   ![](.debug/CUDA32.png)   |
-|  **outMIP** |   ![](.debug/INPUT64MIP.png)    |   ![](.debug/CPU32MIP.png)  |   ![](.debug/CUDA32MIP.png)   |
+## Build and Run
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd <repository-directory>
+   ```
 
-## Code organization
+2. Install the required dependencies:
+   - For OpenCV, you can use:
+     ```bash
+     sudo apt-get install libopencv-dev  # For Debian/Ubuntu
+     ```
 
-`src/` This folder contains source code `.cu` and `.h` files;
+3. Build the project:
+   ```bash
+   make all
+   ```
 
-`lib/` This folder contains additional includes;
+4. Run the application:
+   ```bash
+   ./run.sh
+   ```
 
-`data/` This folder is used by application as default place of data input/output;
+5. The processed images will be stored in the `output/` directory.
 
-`bin/` This folder contains precompiled example with sha256 checksum. Program is compiled here as the default.
+## Sample Output
 
-`.debug/` This folder contains results of debug build execution to look at.
-
-## Requirements
-
-1. [`opencv`](https://opencv.org/)
-2. [`curl`](https://curl.se/)
+|Input|Output|
+|:-:|:-:|
+|![image4885](https://github.com/user-attachments/assets/5f01939e-a07a-4b5d-ba97-5dad20abc952) |![canny_edges_7](https://github.com/user-attachments/assets/98a54f9d-528b-41bd-ad14-73a717963e16) |
+|![image4944](https://github.com/user-attachments/assets/12a7beb7-b870-49f1-b3b6-cf78e7df16a5) |![canny_edges_45](https://github.com/user-attachments/assets/79d0a0e8-f540-4cf0-a62a-c886f3266887) |
